@@ -1,2 +1,3 @@
 *.config
 #.dockerignore
+postgresql/data/*

@@ -1,0 +1,7 @@
+postgresql:
+  image: postgresql
+  restart: always
+  ports: 
+    - 5432:5432
+  volumes: 
+    - ./postgresql/data:/var/lib/postgresql/data 
