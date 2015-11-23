@@ -1,15 +1,22 @@
-postgresql:
-  image: postgresql
+db:
+  build: ./postgresql
+  #image: whatever4711/rpi-postgresql
   restart: always
   ports: 
     - 5432:5432
   volumes: 
     - ./postgresql/data:/var/lib/postgresql/data 
 
-phppgadmin:
-  image: phppgadmin
+admin:
+  build: ./phppgadmin
+  #image: whatever4711/rpi-phppgadmin
   restart: always
   ports:
     - 80:80
   links:
-    - postgresql
+    - db
+  environment:
+    POSTGRES_DEFAULTDB: 'postgres'
+    POSTGRES_HOST: db
+    POSTGRES_PORT: $DB_PORT_5432_TCP_PORT
+
