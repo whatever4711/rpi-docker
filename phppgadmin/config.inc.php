@@ -42,9 +42,9 @@
 	$conf['servers'][0]['slony_sql'] = '/usr/share/slony1';
 
 	// Example for a second server (PostgreSQL for Windows)
-	$conf['servers'][1]['desc'] = 'Test Server';
-	$conf['servers'][1]['host'] = '192.168.9.1';
-	$conf['servers'][1]['port'] = 5432;
+	//$conf['servers'][1]['desc'] = 'Test Server';
+	//$conf['servers'][1]['host'] = '192.168.9.1';
+	//$conf['servers'][1]['port'] = 5432;
 	//$conf['servers'][1]['sslmode'] = 'allow';
 	//$conf['servers'][1]['defaultdb'] = 'template1';
 	//$conf['servers'][1]['pg_dump_path'] = 'C:\\Program Files\\PostgreSQL\\8.0\\bin\\pg_dump.exe';

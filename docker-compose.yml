@@ -6,17 +6,26 @@ db:
     - 5432:5432
   volumes: 
     - ./postgresql/data:/var/lib/postgresql/data 
+  environment:
+    - PGDATA=/var/lib/postgresql/data
+    - POSTGRES_PASSWORD=deviator
+    - POSTGRES_USER=postgres
 
 admin:
   build: ./phppgadmin
   #image: whatever4711/rpi-phppgadmin
   restart: always
   ports:
-    - 80:80
+    - 8080:80
   links:
     - db
   environment:
-    POSTGRES_DEFAULTDB: 'postgres'
+    POSTGRES_DEFAULTDB: postgres
     POSTGRES_HOST: db
-    POSTGRES_PORT: $DB_PORT_5432_TCP_PORT
+    POSTGRES_PORT: 5432
 
+# PWs for DBs:
+# gitlab
+# b!KVcDLqPSu^
+# owncloud
+# *Tnb8v0NkJjP
