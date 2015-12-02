@@ -24,7 +24,7 @@ VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
 COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ
 
 # Install Python dependencies
-RUN pip --default-timeout=60 install -r $DOCKYARD_SRVPROJ/requirements.txt
+RUN pip --timeout 60 install -r $DOCKYARD_SRVPROJ/requirements.txt
 
 # Port to expose
 EXPOSE 8000
