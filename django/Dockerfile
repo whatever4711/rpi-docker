@@ -12,7 +12,8 @@ ENV DOCKYARD_SRVPROJ=/srv/hello_django
 
 # Update the default application repository sources list
 RUN apt-get update && apt-get -y upgrade
-RUN apt-get install -y python3 python3-pip python3-django
+RUN apt-get install -y python3 python3-pip
+#RUN apt-get install -y python3-django
 RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN ln -s /usr/bin/pip3 /usr/bin/pip
 # Create application subdirectories
@@ -24,7 +25,7 @@ VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
 COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ
 
 # Install Python dependencies
-RUN pip --timeout 60 install -r $DOCKYARD_SRVPROJ/requirements.txt
+RUN pip --default-timeout=60 install -r $DOCKYARD_SRVPROJ/requirements.txt
 
 # Port to expose
 EXPOSE 8000
