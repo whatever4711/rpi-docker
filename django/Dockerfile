@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM resin/rpi-raspbian
+FROM whatever4711/rpi-python3
 MAINTAINER Marcel Grossmann <whatever4711@gmail.com>
 
 # Set env variables used in this Dockerfile (add a unique prefix, such as DOCKYARD)
@@ -10,13 +10,6 @@ ENV DOCKYARD_SRVHOME=/srv
 # Directory in container for project source files
 ENV DOCKYARD_SRVPROJ=/srv/hello_django
 
-# Update the default application repository sources list
-RUN apt-get update && apt-get -y upgrade
-RUN apt-get install -y python3 python3-pip
-#RUN apt-get install -y python3-django
-RUN ln -s /usr/bin/python3 /usr/bin/python
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
-# Create application subdirectories
 WORKDIR $DOCKYARD_SRVHOME
 RUN mkdir media static logs
 VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
