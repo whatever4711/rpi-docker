@@ -13,6 +13,9 @@ exec gunicorn hello.wsgi:application \
 	--name hello_django \
 	--bind 0.0.0.0:8000 \
 	--workers 3 \
+	--keyfile $GRUNT_KEY \
+	--certfile $GRUNT_CERT \
+	--do-handshake-on-connect
 	--log-level=info \
 	--log-file=/srv/logs/gunicorn.log \
 	--access-logfile=/srv/logs/access.log \

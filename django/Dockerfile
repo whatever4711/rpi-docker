@@ -4,7 +4,7 @@ MAINTAINER Marcel Grossmann <whatever4711@gmail.com>
 
 # Set env variables used in this Dockerfile (add a unique prefix, such as DOCKYARD)
 # Local directory with project source
-ENV DOCKYARD_SRC=hello_django
+ENV DOCKYARD_SRC=Wedding
 # Directory in container for all project files
 ENV DOCKYARD_SRVHOME=/srv
 # Directory in container for project source files
@@ -12,7 +12,7 @@ ENV DOCKYARD_SRVPROJ=/srv/hello_django
 
 WORKDIR $DOCKYARD_SRVHOME
 RUN mkdir media static logs
-VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
+VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/", "/etc/cert"]
 
 # Copy application source code to SRCDIR
 COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ

@@ -1,3 +1,4 @@
 *.config
 #.dockerignore
 postgresql/data/*
+django/Wedding/*
