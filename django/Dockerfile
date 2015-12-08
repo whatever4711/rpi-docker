@@ -16,6 +16,14 @@ VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/", "/etc/cert"]
 
 # Copy application source code to SRCDIR
 COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ
+# For DB
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends libpq-dev
+# Clean up
+# Clean Up
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 # Install Python dependencies
 RUN pip --default-timeout=60 install -r $DOCKYARD_SRVPROJ/requirements.txt
