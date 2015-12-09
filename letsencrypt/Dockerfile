@@ -11,7 +11,7 @@ EXPOSE 443
 # TODO: make sure --config-dir and --work-dir cannot be changed
 # through the CLI (letsencrypt-docker wrapper that uses standalone
 # authenticator and text mode only?)
-VOLUME /etc/letsencrypt /var/lib/letsencrypt
+VOLUME /etc/letsencrypt 
 
 WORKDIR /opt/letsencrypt
 
@@ -49,12 +49,11 @@ COPY letsencrypt-nginx /opt/letsencrypt/src/letsencrypt-nginx/
 
 
 # py26reqs.txt not installed!
-RUN virtualenv --no-site-packages -p python2 /opt/letsencrypt/venv && \
-    /opt/letsencrypt/venv/bin/pip install \
-    -e /opt/letsencrypt/src/acme \
-    -e /opt/letsencrypt/src \
-    -e /opt/letsencrypt/src/letsencrypt-apache \
-    -e /opt/letsencrypt/src/letsencrypt-nginx
+RUN virtualenv --no-site-packages -p python2 /opt/letsencrypt/venv
+RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/src/acme
+RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/src
+RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/src/letsencrypt-apache
+RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/src/letsencrypt-nginx
 
 # install in editable mode (-e) to save space: it's not possible to
 # "rm -rf /opt/letsencrypt/src" (it's stays in the underlaying image);
