@@ -62,5 +62,9 @@ RUN virtualenv --no-site-packages -p python2 /opt/letsencrypt/venv && \
 # bash" and investigate, apply patches, etc.
 
 ENV PATH /opt/letsencrypt/venv/bin:$PATH
+ENV DNS_MAIL abc@letsencrypt.de
+ENV DNS_ENTRY abc.com,www.abc.com
+ENV DNS_CERT /etc/letsencrypt
 
-ENTRYPOINT [ "letsencrypt" ]
+COPY ./docker-entrypoint.sh /opt/letsencrypt/
+#ENTRYPOINT ["/docker-entrypoint.sh"]

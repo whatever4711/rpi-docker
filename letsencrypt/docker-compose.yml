@@ -1,0 +1,12 @@
+letsencrypt:
+  build: .
+  ports:
+    - 443:443
+    - 80:80
+  volumes:
+    -  /home/marcel/scert:/etc/letsencrypt
+  environment:
+    - DNS_MAIL=whatever4711@gmail.com
+    - DNS_ENTRY=whatever4711.gq,www.whatever4711.gq
+  entrypoint: ./docker-entrypoint.sh 
+

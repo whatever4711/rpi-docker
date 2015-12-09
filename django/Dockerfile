@@ -8,7 +8,7 @@ ENV DOCKYARD_SRC=Wedding
 # Directory in container for all project files
 ENV DOCKYARD_SRVHOME=/srv
 # Directory in container for project source files
-ENV DOCKYARD_SRVPROJ=/srv/hello_django
+ENV DOCKYARD_SRVPROJ=/srv/Wedding
 
 WORKDIR $DOCKYARD_SRVHOME
 RUN mkdir media static logs
