@@ -6,13 +6,17 @@ MAINTAINER Marcel Grossmann <whatever4711@gmail.com>
 
 # Note: this only exposes the port to other docker containers. You
 # still have to bind to 443@host at runtime, as per the ACME spec.
-EXPOSE 443
+EXPOSE 443 80
 
 # TODO: make sure --config-dir and --work-dir cannot be changed
 # through the CLI (letsencrypt-docker wrapper that uses standalone
 # authenticator and text mode only?)
 VOLUME /etc/letsencrypt 
-
+WORKDIR /opt
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends git
+RUN git config --global http.sslVerify false
+RUN git clone https://github.com/letsencrypt/letsencrypt.git
 WORKDIR /opt/letsencrypt
 
 # no need to mkdir anything:
@@ -21,8 +25,8 @@ WORKDIR /opt/letsencrypt
 # directories in its path.
 
 
-COPY bootstrap/ubuntu.sh /opt/letsencrypt/src/ubuntu.sh
-RUN /opt/letsencrypt/src/ubuntu.sh && \
+#COPY bootstrap/ubuntu.sh /opt/letsencrypt/src/ubuntu.sh
+RUN /opt/letsencrypt/bootstrap/_deb_common.sh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
            /tmp/* \
@@ -32,7 +36,7 @@ RUN /opt/letsencrypt/src/ubuntu.sh && \
 # Dockerfile we make sure we cache as much as possible
 
 
-COPY setup.py README.rst CHANGES.rst MANIFEST.in /opt/letsencrypt/src/
+#COPY setup.py README.rst CHANGES.rst MANIFEST.in /opt/letsencrypt/src/
 
 # all above files are necessary for setup.py, however, package source
 # code directory has to be copied separately to a subdirectory...
@@ -42,18 +46,18 @@ COPY setup.py README.rst CHANGES.rst MANIFEST.in /opt/letsencrypt/src/
 # copied, just its contents." Order again matters, three files are far
 # more likely to be cached than the whole project directory
 
-COPY letsencrypt /opt/letsencrypt/src/letsencrypt/
-COPY acme /opt/letsencrypt/src/acme/
-COPY letsencrypt-apache /opt/letsencrypt/src/letsencrypt-apache/
-COPY letsencrypt-nginx /opt/letsencrypt/src/letsencrypt-nginx/
+#COPY letsencrypt /opt/letsencrypt/src/letsencrypt/
+#COPY acme /opt/letsencrypt/src/acme/
+#COPY letsencrypt-apache /opt/letsencrypt/src/letsencrypt-apache/
+#COPY letsencrypt-nginx /opt/letsencrypt/src/letsencrypt-nginx/
 
 
 # py26reqs.txt not installed!
 RUN virtualenv --no-site-packages -p python2 /opt/letsencrypt/venv
-RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/src/acme
-RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/src
-RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/src/letsencrypt-apache
-RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/src/letsencrypt-nginx
+RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/acme
+RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt
+RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/letsencrypt-apache
+RUN /opt/letsencrypt/venv/bin/pip --default-timeout=60 install -e /opt/letsencrypt/letsencrypt-nginx
 
 # install in editable mode (-e) to save space: it's not possible to
 # "rm -rf /opt/letsencrypt/src" (it's stays in the underlaying image);
@@ -66,4 +70,5 @@ ENV DNS_ENTRY abc.com,www.abc.com
 ENV DNS_CERT /etc/letsencrypt
 
 COPY ./docker-entrypoint.sh /opt/letsencrypt/
-#ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT [ "./docker-entrypoint.sh" ] 
+

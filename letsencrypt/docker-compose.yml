@@ -7,6 +7,6 @@ letsencrypt:
     -  /home/marcel/scert:/etc/letsencrypt
   environment:
     - DNS_MAIL=whatever4711@gmail.com
-    - DNS_ENTRY=whatever4711.gq,www.whatever4711.gq
-  entrypoint: ./docker-entrypoint.sh 
+    - DNS_ENTRY=whatever4711.tk,www.whatever4711.tk
+#  entrypoint: letsencrypt certonly --agree-tos --email whatever4711@gmail.com --domains whatever4711.gq,www.whatever4711.gq --standalone 
 

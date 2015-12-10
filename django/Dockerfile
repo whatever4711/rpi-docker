@@ -9,10 +9,11 @@ ENV DOCKYARD_SRC=Wedding
 ENV DOCKYARD_SRVHOME=/srv
 # Directory in container for project source files
 ENV DOCKYARD_SRVPROJ=/srv/Wedding
+ENV CERT=/etc/cert
 
 WORKDIR $DOCKYARD_SRVHOME
 RUN mkdir media static logs
-VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/", "/etc/cert"]
+VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/", "$CERT"]
 
 # Copy application source code to SRCDIR
 COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ

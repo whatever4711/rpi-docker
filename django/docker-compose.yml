@@ -3,13 +3,8 @@ django:
   restart: always
   expose:
     - 8000
-  volumes:
-    -  /home/marcel/scert:/etc/cert
   environment:
-    - GRUNT_KEY=/etc/cert/key.pem
-    - GRUNT_CERT=/etc/cert/cert.pem
     - DOCKYARD_SRC=/home/marcel/Wedding
-#  entrypoint: /bin/bash
 
 haproxy:
   image: hypriot/rpi-haproxy
@@ -22,4 +17,5 @@ haproxy:
     - django:django
   volumes:
     - ./haproxy:/haproxy-override
+    - /home/marcel/scert:/haproxy-override/certs
 
