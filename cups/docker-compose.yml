@@ -1,10 +1,11 @@
 cups:
   build: .
+  restart: always
   volumes:
     - /dev/bus/usb:/dev/bus/usb
     - /var/run/dbus:/var/run/dbus
   ports:
-    - 631:631/tcp
+    - 6631:631/tcp
   environment:
     - USERNAME=admin
     - PASSWORD=1234

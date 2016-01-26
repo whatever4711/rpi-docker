@@ -1,5 +1,6 @@
 ui:
   image: hypriot/rpi-dockerui
+  restart: always
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
   ports:
