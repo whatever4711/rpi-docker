@@ -11,8 +11,10 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositorie
 RUN apk update && \
 apk add gutenprint && \
 apk add gutenprint-cups && \
+apk add hplip && \
 rm -rf /var/cache/apk/*
 
 COPY ./cupsd.conf /etc/cups/
+COPY ./run.sh .
 
-CMD ["/usr/sbin/cupsd", "-f"]
+ENTRYPOINT ["bash", "run.sh"]
