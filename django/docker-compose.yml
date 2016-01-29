@@ -2,7 +2,7 @@ django:
   build: .
   restart: always
   expose:
-    - 8000
+    - 82:8000
   environment:
     - DOCKYARD_SRC=/home/marcel/Wedding
 
@@ -10,7 +10,7 @@ haproxy:
   image: hypriot/rpi-haproxy
   restart: always
   ports:
-    - 80:80
+    - 81:80
     - 443:443
     - 8080:8080
   links:
