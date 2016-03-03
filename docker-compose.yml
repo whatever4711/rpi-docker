@@ -1,36 +1,40 @@
-ui:
-  image: hypriot/rpi-dockerui
-  restart: always
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-  ports:
-    - 9000:9000
+version: '2'
 
-db:
-  build: ./postgresql
-  #image: whatever4711/rpi-postgresql
-  restart: always
-  ports: 
-    - 5432:5432
-  volumes: 
-    - ./postgresql/data:/var/lib/postgresql/data 
-  environment:
-    - PGDATA=/var/lib/postgresql/data
-    - POSTGRES_PASSWORD=deviator
-    - POSTGRES_USER=postgres
+services:
 
-admin:
-  build: ./phppgadmin
-  #image: whatever4711/rpi-phppgadmin
-  restart: always
-  ports:
-    - 8080:80
-  links:
-    - db
-  environment:
-    POSTGRES_DEFAULTDB: postgres
-    POSTGRES_HOST: db
-    POSTGRES_PORT: 5432
+  ui:
+    image: hypriot/rpi-dockerui
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9000:9000
+  
+  db:
+    build: ./postgresql
+    #image: whatever4711/rpi-postgresql
+    restart: always
+    ports: 
+      - 5432:5432
+    volumes: 
+      - ./postgresql/data:/var/lib/postgresql/data 
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=deviator
+      - POSTGRES_USER=postgres
+  
+  admin:
+    build: ./phppgadmin
+    #image: whatever4711/rpi-phppgadmin
+    restart: always
+    ports:
+      - 8080:80
+    links:
+      - db
+    environment:
+      POSTGRES_DEFAULTDB: postgres
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
 
 # PWs for DBs:
 # gitlab
