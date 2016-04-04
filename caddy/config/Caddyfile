@@ -1,0 +1,13 @@
+0.0.0.0:80 https://whatever4711.wha.la http://whatever4711.wha.la {
+    tls whatever4711@gmail.com
+    tls {
+        max_certs 10
+    }
+    root /srv
+    ext  .html
+    gzip
+    errors {
+        log error.log
+	404 404.html
+    }
+}
