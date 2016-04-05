@@ -12,12 +12,11 @@ RUN mkdir /caddysrc && \
     printf "localhost:80" > /etc/Caddyfile
 
 RUN mkdir /srv 
-
+RUN mkdir -p /root/.caddy/letsencrypt
 EXPOSE 80 443 2015
 
 WORKDIR /srv
 
 ENTRYPOINT ["/usr/bin/caddy"]
 CMD ["--agree", "--conf", "/etc/Caddyfile"]
-#CMD /usr/bin/caddy -conf /etc/Caddyfile -agree
 

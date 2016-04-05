@@ -17,4 +17,5 @@ services:
     volumes:
       - ./site:/srv
       - ./config/Caddyfile:/etc/Caddyfile
-    #command: -agree -conf /etc/Caddyfile
+      - ./config/letsencrypt:/root/.caddy/letsencrypt
+    command: --agree --conf /etc/Caddyfile
