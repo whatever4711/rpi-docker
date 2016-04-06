@@ -1,0 +1,13 @@
+version: '2'
+networks:
+  backend:
+    external:
+      name: caddy_backend
+
+services:
+  webserver:
+    image: hypriot/rpi-nano-httpd  
+    networks:
+      - backend
+    expose:
+      - 80

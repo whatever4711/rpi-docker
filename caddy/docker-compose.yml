@@ -1,7 +1,9 @@
 version: "2"
 
 networks:
-  front:
+  frontend:
+    driver: bridge
+  backend:
     driver: bridge
 
 services:
@@ -9,13 +11,14 @@ services:
     build: .
     #restart: always
     networks:
-      - front
+      - frontend
+      - backend 
     ports:
       - 80:80
       - 443:443
       - 2015:2015
     volumes:
       - ./site:/srv
-      - ./config/Caddyfile:/etc/Caddyfile
-      - ./config/letsencrypt:/root/.caddy/letsencrypt
-    command: --agree --conf /etc/Caddyfile
+      #- ./config/Caddyfile:/etc/Caddyfile
+      - ./config:/root/.caddy
+    command: --agree --conf /root/.caddy/Caddyfile
