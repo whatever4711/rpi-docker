@@ -1,0 +1,9 @@
+whatever4711.tk:80 {
+  tls off
+  log / /root/.caddy/logs/dokuwiki.log "{proto} Request: {method} {path} ... {scheme} {host} {remote}"
+  proxy / http://dokuwiki:80/ {
+    proxy_header Host {host}
+    proxy_header X-Real-IP {remote}
+    proxy_header X-Forwarded-Proto {scheme}
+  }
+}

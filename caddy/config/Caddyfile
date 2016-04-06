@@ -1,0 +1,18 @@
+#debug.domain.tld {
+#  log stdout
+#  root /root/.caddy/startpage
+#}
+
+import  /root/.caddy/conf/enabled/*
+
+# https://caddyserver.com/blog/caddy-0_8_1-released
+# reload with USR1
+# docker kill --signal="USR1" caddy_caddy_1
+# stops the container ...
+
+#:443 {
+#  root /root/.caddy/startpage
+#  tls {
+#    max_certs 10
+#  }
+#}
