@@ -1,0 +1,15 @@
+version: '2'
+networks:
+  backend:
+    external:
+      name: caddy_backend
+
+services:
+  invitation:
+    image: hypriot/rpi-busybox-httpd  
+    volumes:
+      - ./site:/www
+    networks:
+      - backend
+    expose:
+      - 80

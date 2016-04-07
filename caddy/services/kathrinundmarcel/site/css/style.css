@@ -1,0 +1,122 @@
+/*
+ yellow: #efb50e
+ grey: #d3d5d4
+ blue: #7a97c1
+ red: #ad2c17
+  */
+body {
+ background-image: url('../img/background.png');
+ background-repeat: repeat;
+ height: 100%;
+ width: 100%;
+ text-align: center;
+}
+.carousel-outer{
+	position: relative;
+	background:white;
+	left: 10%;
+    width:80%;
+    height : auto;
+    top: 0px;
+	text-align: center;
+	box-shadow: 5px 0px 50px #d4d5d5;
+	font-family: 'Tangerine', cursive;
+	}
+
+h1{
+	font-size: 72px;
+}
+
+h2{
+	font-size: 48px;
+}
+h3{
+	font-size: 38px;
+}
+
+.carousel-outer{
+    border-radius:1%;
+	-webkit-border-radius:1%;
+	-moz-border-radius:1%;
+	
+}
+
+#wichtig{
+	color:#ad2c17;
+	opacity:0.9
+}
+
+#background{
+	background-image: url('../img/invitation.png');
+	margin:0 auto;
+	background-position: right top;
+ 	
+}
+.carousel-control.left,
+.carousel-control.right {
+	background: none
+}
+
+/*
+hr{
+ 	background-color:#000000; 
+ 	border-width:0; 
+ 	color:#000000; 
+ 	height:2px; 
+ 	display: inline-block; 
+ 	text-align: left; 
+ 	width:50%;' 
+}
+*/
+
+
+.month{
+	color: red;
+}
+
+.padding{
+	padding-top: 50px;
+    padding-right: 20px;
+    padding-bottom: 50px;
+    padding-left: 20px;
+}	
+
+#defaultCountdown{	
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 30px; 	
+}
+
+.countdown-row {
+	margin:0 auto;
+	display:inline-block;
+}
+
+.countdown-section {
+	display: inline-block;
+	float: left;
+	text-align: center;
+	width:80px;
+	height:80px;
+	border-radius:50%;
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
+	border:solid 1px #7a97c1;
+	text-align:center;
+	margin:50px 20px;
+}
+
+.countdown-amount {
+    font-size: 48px;
+	font-weight:700;
+	line-height:70px;
+}
+.countdown-period {
+    display: block;
+	line-height:60px;
+	color:#ad2c17;
+	font-size:28px;
+	font-weight:100;
+}
+

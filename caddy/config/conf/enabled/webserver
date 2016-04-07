@@ -1,8 +1,10 @@
 whatever4711.tk {
   tls whatever4711@gmail.com 
-  log / /root/.caddy/logs/dokuwiki.log "{proto} Request: {method} {path} ... {scheme} {host} {remote}"
-  proxy / http://webserver:80/ {
-    proxy_header Host {host}
+  log / /root/.caddy/logs/webserver.log "{proto} Request: {method} {path} ... {scheme} {host} {remote}"
+  redir /app /app/ 307
+  proxy /app webserver:80 {
+    without /app
+    proxy_header Host {host}/app
     proxy_header X-Real-IP {remote}
     proxy_header X-Forwarded-Proto {scheme}
   }

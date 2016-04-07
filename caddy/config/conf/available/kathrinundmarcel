@@ -1,10 +1,10 @@
-whatever4711.tk {
+ kathrinundmarcel.tk {
   tls whatever4711@gmail.com 
   log / /root/.caddy/logs/webserver.log "{proto} Request: {method} {path} ... {scheme} {host} {remote}"
   redir /app /app/ 307
-  proxy /app webserver:80 {
-    without /app
-    proxy_header Host {host}/app
+  proxy / invitation:80 {
+    without /
+    proxy_header Host {host}
     proxy_header X-Real-IP {remote}
     proxy_header X-Forwarded-Proto {scheme}
   }
