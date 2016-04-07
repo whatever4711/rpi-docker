@@ -1,6 +1,0 @@
-04/Apr/2016:21:36:35 +0000 [NOTICE 404 /favicon.ico] could not load error page: open /srv/404.html: no such file or directory
-04/Apr/2016:23:12:44 +0000 [NOTICE 404 http://domkrim.com/av.php] could not load error page: open /srv/404.html: no such file or directory
-05/Apr/2016:04:39:20 +0000 [NOTICE 404 /phpmyadmin/scripts/setup.php] could not load error page: open /srv/404.html: no such file or directory
-05/Apr/2016:05:54:30 +0000 [NOTICE 404 /favicon.ico] could not load error page: open /srv/404.html: no such file or directory
-05/Apr/2016:12:01:59 +0000 [NOTICE 404 /favicon.ico] could not load error page: open /srv/404.html: no such file or directory
-05/Apr/2016:12:02:06 +0000 [NOTICE 404 /favicon.ico] could not load error page: open /srv/404.html: no such file or directory
