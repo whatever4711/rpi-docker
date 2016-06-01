@@ -2,3 +2,7 @@
 #.dockerignore
 postgresql/data/*
 django/Wedding/*
+picapport/data/*
+!picapport/data/config
+picapport/data/config/*
+!picapport/data/config/picapport.properties
