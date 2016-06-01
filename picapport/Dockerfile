@@ -20,4 +20,4 @@ RUN apt-get install -yqqf
 
 EXPOSE 8080
 
-#ENTRYPOINT ["/opt/picapport/StartPicApport.sh"]
+ENTRYPOINT ["/opt/picapport/StartPicApport.sh"]
