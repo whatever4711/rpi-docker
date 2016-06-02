@@ -1,0 +1,20 @@
+version: '2'
+
+networks:
+  backend:
+    external: rpicaddy_backend
+
+services:
+  picapport:
+    build:
+      context: .
+      dockerfile: AlpineDockerfile
+    restart: always
+    expose:
+      - 80
+    networks:
+      - backend
+    volumes:
+      - data/config:/opt/picapport/.piccapport
+      - cache:/srv/cache
+      - data/photos:/srv/photos
