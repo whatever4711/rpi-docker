@@ -1,0 +1,18 @@
+FROM whatever4711/rpi-java 
+MAINTAINER Marcel Grossmann <whatever4711@gmail.com>
+
+ENV PICAPPORT_PORT=80
+
+RUN mkdir /opt/picapport && \
+    curl -SsL -o /opt/picapport/picapport-headless.jar http://picapport.de/prepare_download_headless_jar-v6.1.php 
+
+WORKDIR /opt/picapport
+
+RUN mkdir .picapport && \
+    printf "%s\n%s\n%s\n" "server.port=$PICAPPORT_PORT" "irobot.root.0.path=/srv/photos" "foto.jpg.usecache=2" > .picapport/picapport.properties
+
+EXPOSE $PICAPPORT_PORT
+
+#ENTRYPOINT ["java", "-DTRACE=INFO", "-Duser.home=/opt/picapport", "-cp", "picapport.jar", "de.contecon.picapport.PicApport", "-configfile=/opt/picapport/.picapport/picapport.properties", "-pgui.enabled=false"]
+
+ENTRYPOINT ["java", "-Duser.home=/opt/picapport", "-jar", "picapport-headless.jar"]
