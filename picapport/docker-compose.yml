@@ -2,7 +2,8 @@ version: '2'
 
 networks:
   backend:
-    external: rpicaddy_backend
+    external: 
+      name: rpicaddy_backend
 
 services:
   picapport:
@@ -15,6 +16,8 @@ services:
     networks:
       - backend
     volumes:
-      - data/config:/opt/picapport/.piccapport
-      - cache:/srv/cache
-      - data/photos:/srv/photos
+      - ./config:/opt/picapport/.picapport
+      - /home/public/NAS/picapport cache:/srv/cache
+      - /home/public/NAS/Shared Pictures:/srv/photos
+
+# ocker run -d --name picapport -p 8080:8080 -v $PWD/data/config/:/opt/picapport/.picapport -v /home/public/NAS/Shared\ Pictures:/srv/photos  whatever4711/rpi-picapport
