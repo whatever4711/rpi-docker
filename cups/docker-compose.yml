@@ -1,13 +1,17 @@
-cups:
-  build: .
-  restart: always
-  volumes:
-    - /dev/bus/usb:/dev/bus/usb
-    - /var/run/dbus:/var/run/dbus
-  ports:
-    - 6631:631/tcp
-  environment:
-    - USERNAME=admin
-    - PASSWORD=1234
-  privileged: true
+version: '2'
+
+services:
+  cups:
+    build: .
+    restart: always
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    volumes:
+      - /var/run/dbus:/var/run/dbus
+    ports:
+      - 631:631/tcp
+    environment:
+      - USERNAME=admin
+      - PASSWORD=1234
+    privileged: true
         
