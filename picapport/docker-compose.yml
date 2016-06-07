@@ -7,9 +7,10 @@ networks:
 
 services:
   picapport:
-    build:
-      context: .
-      dockerfile: AlpineDockerfile
+    image: whatever4711/rpi-picapport
+    #build:
+    #  context: .
+    #  dockerfile: AlpineDockerfile
     restart: always
     expose:
       - 80
@@ -20,4 +21,3 @@ services:
       - /home/public/NAS/picapport cache:/srv/cache
       - /home/public/NAS/Shared Pictures:/srv/photos
 
-# ocker run -d --name picapport -p 8080:8080 -v $PWD/data/config/:/opt/picapport/.picapport -v /home/public/NAS/Shared\ Pictures:/srv/photos  whatever4711/rpi-picapport
