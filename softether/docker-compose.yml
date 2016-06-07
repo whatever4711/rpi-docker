@@ -1,19 +1,20 @@
-busybox:
-  image: sander85/rpi-busybox
-  volumes:
-    - /var/log/vpnserver
-  command: /bin/true
+version: '2'
 
-softether:
-  build: .
-  net: host
-  privileged: true
-  cap_add:
-    - NET_ADMIN
-    - SYS_ADMIN
-  ports:
-    - 1194:1194
-  volumes:
-    - /home/marcel/config/vpn_server.config:/usr/local/vpnserver/vpn_server.config
-  volumes_from:
-    - busybox
+volumes:
+  softether-logs:
+    driver: local
+
+services:
+  softether:
+    build: .
+    restart: always
+    network_mode: host
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    ports:
+      - 1194:1194
+    volumes:
+      - /home/marcel/.container/config/vpn_server.config:/usr/local/vpnserver/vpn_server.config
+      - softether-logs:/var/log/vpnserver
