@@ -1,7 +1,7 @@
 FROM resin/rpi-raspbian
 MAINTAINER Marcel Grossmann <whatever4711@gmail.com>
 
-ENV VERSION v4.19-9599-beta-2015.10.19
+ENV VERSION v4.21-9613-beta-2016.04.24
 WORKDIR /usr/local/vpnserver
 
 RUN apt-get update &&\

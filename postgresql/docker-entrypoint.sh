@@ -1,95 +1,54 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-set_listen_addresses() {
-	sedEscapedValue="$(echo "$1" | sed 's/[\/&]/\\&/g')"
-	sed -ri "s/^#?(listen_addresses\s*=\s*)\S+/\1'$sedEscapedValue'/" "$PGDATA/postgresql.conf"
-}
-
 if [ "$1" = 'postgres' ]; then
-	mkdir -p "$PGDATA"
-	chown -R postgres "$PGDATA"
+	# SET DEFAULT VALUES IF NOT SET
+	PGDATA=${PGDATA:-/var/services/data/postgres}
+	PGLOG=${PGLOG:-/var/services/log/postgres}
+	PGUSER=${PGUSER:-app}
+	PGPASSWORD=${PGPASSWORD:-pgpass}
+	PGDB=${PGDB:-app}
+	PGSUPERPASSWORD=${PGSUPERPASSWORD:-none}
+	mkdir -p "$PGDATA" "$PGLOG"
+	chown -R postgres "$PGDATA" "$PGLOG"
 
-	chmod g+s /run/postgresql
-	chown -R postgres /run/postgresql
-
-	# look specifically for PG_VERSION, as it is expected in the DB dir
-	if [ ! -s "$PGDATA/PG_VERSION" ]; then
+	# INITIAL SETUP IF NO PGDATA FOLDER
+	if [ -z "$(ls -A "$PGDATA")" ]; then
+		# EDIT postgresql.conf
 		gosu postgres initdb
+		sed -ri "s/^#(listen_addresses\s*=\s*)\S+/\1'*'/" "$PGDATA"/postgresql.conf
 
-		# check password first so we can output the warning before postgres
-		# messes it up
-		if [ "$POSTGRES_PASSWORD" ]; then
-			pass="PASSWORD '$POSTGRES_PASSWORD'"
-			authMethod=md5
-		else
-			# The - option suppresses leading tabs but *not* spaces. :)
-			cat >&2 <<-'EOWARN'
-			****************************************************
-			WARNING: No password has been set for the database.
-			This will allow anyone with access to the
-			Postgres port to access your database. In
-			Docker's default configuration, this is
-			effectively any other container on the same
-			system.
-			Use "-e POSTGRES_PASSWORD=password" to set
-			it in "docker run".
-			****************************************************
-			EOWARN
+		# CREATE PGUSER
+		gosu postgres postgres --single -jE <<-EOSQL
+			CREATE USER "$PGUSER" WITH PASSWORD '$PGPASSWORD';
+		EOSQL
 
-			pass=
-			authMethod=trust
+		# CREATE PGDB DATABASE
+		gosu postgres postgres --single -jE <<-EOSQL
+			CREATE DATABASE "$PGDB" OWNER "$PGUSER";
+		EOSQL
+		echo
+
+		# WARNING FOR SIMPLE PGPASSWORD
+		if [ "$PGPASSWORD" == 'pgpass' ]; then
+			echo "*** please change to a more secure password, if this is running in production ! ***"
 		fi
 
-		{ echo; echo "host all all 0.0.0.0/0 $authMethod"; } >> "$PGDATA/pg_hba.conf"
-
-			# internal start of server in order to allow set-up using psql-client
-			# does not listen on TCP/IP and waits until start finishes
-			gosu postgres pg_ctl -D "$PGDATA" \
-				-o "-c listen_addresses=''" \
-				-w start
-
-			: ${POSTGRES_USER:=postgres}
-			: ${POSTGRES_DB:=$POSTGRES_USER}
-			export POSTGRES_USER POSTGRES_DB
-
-			if [ "$POSTGRES_DB" != 'postgres' ]; then
-				psql --username postgres <<-EOSQL
-				CREATE DATABASE "$POSTGRES_DB" ;
-				EOSQL
-				echo
-			fi
-
-			if [ "$POSTGRES_USER" = 'postgres' ]; then
-				op='ALTER'
-			else
-				op='CREATE'
-			fi
-
-			psql --username postgres <<-EOSQL
-			$op USER "$POSTGRES_USER" WITH SUPERUSER $pass ;
+		# SET SUPER USER PASSWORD postgres
+		if [ "$PGSUPERPASSWORD" != 'none' ]; then
+			gosu postgres postgres --single -jE <<-EOSQL
+				ALTER USER postgres WITH SUPERUSER PASSWORD '$PGSUPERPASSWORD';
 			EOSQL
 			echo
+		fi
 
-			echo
-			for f in /docker-entrypoint-initdb.d/*; do
-				case "$f" in
-					*.sh)  echo "$0: running $f"; . "$f" ;;
-				*.sql) echo "$0: running $f"; psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" < "$f" && echo ;;
-			*)     echo "$0: ignoring $f" ;;
-		esac
-		echo
-	done
+		# ALLOW ALL HOST
+		{ echo; echo "host all all 0.0.0.0/0 md5"; } >> "$PGDATA"/pg_hba.conf
+	fi
 
-	gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop
-	set_listen_addresses '*'
-
-	echo
-	echo 'PostgreSQL init process complete; ready for start up.'
-	echo
+	# RUN POSTGRES
+	exec gosu postgres "$@"
 fi
 
-exec gosu postgres "$@"
-																																																																																																																																																																																												fi
-
-																																																																																																																																																																																												exec "$@"
+# RUN OTHER COMMAND
+exec "$@"
