@@ -1,15 +1,23 @@
 version: '2'
 
+networks:
+  backend:
+    external: 
+      name: rpicaddy_backend
+
 services:
   cups:
     build: .
     restart: always
-    devices:
-      - /dev/bus/usb:/dev/bus/usb
     volumes:
       - /var/run/dbus:/var/run/dbus
+      - /dev/bus/usb:/dev/bus/usb
     ports:
-      - 631:631/tcp
+      - 192.168.47.11:631:631
+    #expose:
+    #  - 631
+    networks:
+      - backend
     environment:
       - USERNAME=admin
       - PASSWORD=1234

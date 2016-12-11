@@ -1,8 +1,8 @@
-FROM hypriot/rpi-alpine-scratch
+FROM armhf/alpine:3.4
 MAINTAINER Marcel Grossmann <whatever4711@gmail.com>
 
 ENV JAVA_VERSION=8 \
-    JAVA_UPDATE=91 \
+    JAVA_UPDATE=111 \
     JAVA_BUILD=14 \
     JAVA_HOME="/opt/jdk" 
 
@@ -13,18 +13,15 @@ RUN apk add --update curl libgcc && \
     curl -jksSL -o /tmp/glibc-bin-2.22-r1.apk "https://github.com/leannenorthrop/alpine-pkg-glibc/releases/download/glibc-2.22-r1-armhf-beta/glibc-bin-2.22-r1.apk" && \
     apk add --allow-untrusted /tmp/glibc-bin-2.22-r1.apk && \
     /usr/glibc-compat/sbin/ldconfig /lib /usr/lib /usr/glibc-compat/lib && \
-    ln -s /usr/glibc-compat/lib/ld-2.22.so /lib/ld-linux-armhf.so.3
-
-# Install Java
-RUN apk add --virtual=build-dependencies ca-certificates && \
+    ln -s /usr/glibc-compat/lib/ld-2.22.so /lib/ld-linux-armhf.so.3 && \
+    apk add --virtual=build-dependencies ca-certificates && \
     cd /tmp && \
     curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/java.tar.gz "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-arm32-vfp-hflt.tar.gz" && \
     tar -xzf /tmp/java.tar.gz && \
     mkdir -p /usr/lib/jvm && \
     mv /tmp/jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE} /usr/lib/jvm/java-${JAVA_VERSION}-oracle && \
-    chown -R root:root /usr/lib/jvm/java-${JAVA_VERSION}-oracle
-
-RUN mkdir /opt && \
+    chown -R root:root /usr/lib/jvm/java-${JAVA_VERSION}-oracle && \
+    mkdir /opt && \
     ln -s "/usr/lib/jvm/java-${JAVA_VERSION}-oracle" "$JAVA_HOME" && \
     ln -s "$JAVA_HOME/bin/"* "/usr/bin/" && \
     rm -rf "$JAVA_HOME/"*src.zip && \
