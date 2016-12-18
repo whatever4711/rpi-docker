@@ -7,6 +7,7 @@ volumes:
 services:
   softether:
     build: .
+    image: whatever4711/softether:armhf
     restart: always
     network_mode: host
     privileged: true
